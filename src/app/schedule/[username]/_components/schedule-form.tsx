@@ -13,9 +13,9 @@ export function ScheduleForm(props: ScheduleFormProps) {
 
   const [selectedDateTime, setSelectedDateTime] = useState<Date>()
 
-  function clearSelectedDateTime() {
-    setSelectedDateTime(undefined)
-  }
+  // function clearSelectedDateTime() {
+  //   setSelectedDateTime(undefined)
+  // }
 
   return selectedDateTime ? (
     <ConfirmStep

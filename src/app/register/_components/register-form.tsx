@@ -10,14 +10,13 @@ import { z } from 'zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ArrowRight, Check } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
@@ -51,7 +50,7 @@ export function RegisterForm() {
   const {
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = form
 
   useEffect(() => {
@@ -96,14 +95,6 @@ export function RegisterForm() {
               <FormControl>
                 <Input placeholder="Informe seu nome de usuário" {...field} />
               </FormControl>
-              {/* <FormDescription>
-                  {!errors.username && field.value && (
-                    <div className="flex items-center gap-1 font-medium text-primary ">
-                      <Check className="h-5 w-5 " />
-                      Nome de usuário válido.
-                    </div>
-                  )}
-                </FormDescription> */}
               <FormMessage />
             </FormItem>
           )}

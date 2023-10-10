@@ -4,22 +4,17 @@ import { useState } from 'react'
 import { TimePicker } from '@/app/schedule/[username]/_components/time-picker'
 import { Calendar } from '@/components/ui/calendar'
 import {
-  addMonths,
   endOfDay,
   getMonth,
   getYear,
   isPast,
   isSameDay,
   parseISO,
-  setDate,
   setHours,
   startOfHour,
-  subMonths,
-  yearsToMonths,
 } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
-import { Loader } from 'lucide-react'
 
 type UserBlockedDatesResponse = {
   blockedDates: string[]
