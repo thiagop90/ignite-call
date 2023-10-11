@@ -83,7 +83,7 @@ export function CalendarStep(props: CalendarStepProps) {
 
   return (
     <div
-      className={`relative  grid grid-cols-1 rounded-md border bg-card ${
+      className={`relative grid grid-cols-1 sm:rounded-md sm:border sm:bg-card ${
         selectedDay && 'md:grid-cols-[1fr_320px]'
       }`}
     >

@@ -8,7 +8,7 @@ import { api } from '@/lib/axios'
 import { convertTimeStringToMinutes } from '@/utils/convert-time-string-to-minutes'
 import { getWeekDays } from '@/utils/get-week-days'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Loader } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -148,8 +148,14 @@ export function TimeIntervalsForm() {
       )}
 
       <Button type="submit" disabled={isSubmitting}>
-        Próximo passo
-        <ArrowRight className="h-4 w-4" />
+        {isSubmitting ? (
+          <Loader className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            Próximo passo
+            <ArrowRight className="h-4 w-4" />
+          </>
+        )}
       </Button>
     </form>
   )

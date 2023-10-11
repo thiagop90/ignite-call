@@ -26,7 +26,7 @@ export default async function Schedule(props: ScheduleProps) {
   const user = await getUser(username)
 
   return (
-    <main className="mx-auto mb-4 mt-20 flex flex-col items-center space-y-6 px-4">
+    <main className="mx-auto mb-4 mt-20 flex flex-col items-center space-y-6 ">
       <header className="flex flex-col items-center">
         <Avatar>
           <AvatarImage src={user.avatar_url ?? ''} />

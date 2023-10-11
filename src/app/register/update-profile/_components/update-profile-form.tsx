@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { ArrowRight, User } from 'lucide-react'
+import { ArrowRight, Loader, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useSession } from 'next-auth/react'
@@ -67,8 +67,14 @@ export function UpdateProfileForm() {
       </div>
 
       <Button type="submit" disabled={isSubmitting}>
-        Finalizar
-        <ArrowRight className="h-4 w-4" />
+        {isSubmitting ? (
+          <Loader className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            Finalizar
+            <ArrowRight className="h-4 w-4" />
+          </>
+        )}
       </Button>
     </form>
   )

@@ -23,7 +23,7 @@ function Calendar({
       locale={ptBR}
       showOutsideDays
       fromMonth={new Date()}
-      className={cn('p-6', className)}
+      className={cn('py-6 sm:px-4', className)}
       classNames={{
         months: 'flex flex-col',
         month: 'space-y-4',
@@ -41,7 +41,7 @@ function Calendar({
         cell: 'text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
         day: cn(
           buttonVariants({ variant: 'ghost' }),
-          'h-10 w-10 lg:text-base sm:w-12 sm:h-12 lg:w-[52px] lg:h-[52px] p-0 aria-selected:opacity-100',
+          'h-12 w-12 lg:text-sm sm:w-14 sm:h-14 p-0 aria-selected:opacity-100',
           {
             'animate-pulse bg-accent text-transparent pointer-events-none':
               !blockedDates,

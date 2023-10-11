@@ -7,6 +7,7 @@ import {
   setMonth,
   setYear,
   startOfMonth,
+  startOfWeek,
 } from 'date-fns'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -64,9 +65,9 @@ export async function GET(
     )
   })
 
-  const referenceDate = setYear(
-    setMonth(new Date(), numericMonthParam),
-    numericYearParam,
+  const referenceDate = startOfWeek(
+    setYear(setMonth(new Date(), numericMonthParam), numericYearParam),
+    { weekStartsOn: 0 },
   )
   const firstDay = startOfMonth(referenceDate)
   const lastDay = endOfMonth(referenceDate)
