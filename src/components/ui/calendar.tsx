@@ -21,6 +21,7 @@ function Calendar({
   return (
     <DayPicker
       locale={ptBR}
+      weekStartsOn={0}
       showOutsideDays
       fromMonth={new Date()}
       className={cn('py-6 sm:px-4', className)}
