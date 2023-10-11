@@ -8,9 +8,16 @@ import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import ptBR from 'date-fns/locale/pt-BR'
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  blockedDates?: Date[] | undefined
+}
 
-function Calendar({ className, classNames, ...props }: CalendarProps) {
+function Calendar({
+  className,
+  classNames,
+  blockedDates,
+  ...props
+}: CalendarProps) {
   return (
     <DayPicker
       locale={ptBR}
@@ -35,11 +42,23 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
         day: cn(
           buttonVariants({ variant: 'ghost' }),
           'h-10 w-10 lg:text-base sm:w-12 sm:h-12 lg:w-[52px] lg:h-[52px] p-0 aria-selected:opacity-100',
+          {
+            'animate-pulse bg-accent text-transparent pointer-events-none':
+              !blockedDates,
+          },
         ),
         day_selected:
           'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-        day_today: 'bg-accent text-accent-foreground',
-        day_outside: 'text-muted-foreground opacity-50 pointer-events-none',
+        day_today: cn(
+          'before:absolute before:bottom-2 before:w-1 before:h-1 before:rounded-full before:bg-accent-foreground aria-selected:before:bg-primary-foreground',
+          {
+            'before:hidden': !blockedDates,
+          },
+        ),
+        day_outside: cn(
+          'text-muted-foreground opacity-50 pointer-events-none',
+          { 'opacity-100': !blockedDates },
+        ),
         day_disabled: 'text-muted-foreground opacity-50',
         day_range_middle:
           'aria-selected:bg-accent aria-selected:text-accent-foreground',

@@ -18,6 +18,9 @@ export function authOptions(cookies: ReadonlyRequestCookies): NextAuthOptions {
         authorization: {
           params: {
             scope: `${googleScopeEmail} ${googleScopeProfile} ${googleScopeCalendar}`,
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
           },
         },
         profile(profile: GoogleProfile) {

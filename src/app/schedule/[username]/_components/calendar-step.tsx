@@ -31,6 +31,14 @@ export function CalendarStep(props: CalendarStepProps) {
 
   const today = new Date()
   const [month, setMonth] = useState<Date>(today)
+
+  const handleMonthChange = (newMonth: Date) => {
+    if (getMonth(newMonth) !== currentMonth) {
+      setSelectedDay(undefined)
+    }
+    setMonth(newMonth)
+  }
+
   const currentMonth = getMonth(month)
   const currentYear = getYear(month)
 
@@ -52,10 +60,6 @@ export function CalendarStep(props: CalendarStepProps) {
       })
     },
   )
-
-  if (!blockedDates) {
-    return []
-  }
 
   const isDateDisabled = (date: Date): boolean => {
     const isPastDate = isPast(endOfDay(date))
@@ -79,7 +83,7 @@ export function CalendarStep(props: CalendarStepProps) {
 
   return (
     <div
-      className={`relative grid grid-cols-1 rounded-md border bg-card ${
+      className={`relative  grid grid-cols-1 rounded-md border bg-card ${
         selectedDay && 'md:grid-cols-[1fr_320px]'
       }`}
     >
@@ -89,7 +93,8 @@ export function CalendarStep(props: CalendarStepProps) {
         onSelect={setSelectedDay}
         disabled={isDateDisabled}
         month={month}
-        onMonthChange={setMonth}
+        onMonthChange={handleMonthChange}
+        blockedDates={blockedDates}
       />
       {selectedDay && (
         <TimePicker

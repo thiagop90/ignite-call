@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Loader } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
 import { ToastAction } from '@/components/ui/toast'
@@ -114,8 +114,14 @@ export function RegisterForm() {
           )}
         />
         <Button type="submit" disabled={isSubmitting}>
-          Próximo passo
-          <ArrowRight className="h-4 w-4" />
+          {isSubmitting ? (
+            <Loader className="h-5 w-5 animate-spin" />
+          ) : (
+            <>
+              Próximo passo
+              <ArrowRight className="h-4 w-4" />
+            </>
+          )}
         </Button>
       </form>
     </Form>
