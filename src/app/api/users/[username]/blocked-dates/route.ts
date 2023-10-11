@@ -7,8 +7,8 @@ import {
   setMonth,
   setYear,
   startOfMonth,
-  startOfWeek,
 } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import { NextRequest, NextResponse } from 'next/server'
 
 interface UserBlockedDatesProps {
@@ -72,6 +72,9 @@ export async function GET(
   const firstDay = startOfMonth(referenceDate)
   const lastDay = endOfMonth(referenceDate)
 
+  const firstDayUTC3 = utcToZonedTime(firstDay, 'America/Sao_Paulo')
+  const lastDayUTC3 = utcToZonedTime(lastDay, 'America/Sao_Paulo')
+
   const userSchedulings = await prisma.scheduling.findMany({
     select: { date: true },
     where: {
@@ -86,8 +89,8 @@ export async function GET(
   const blockedDates: Date[] = []
 
   eachDayOfInterval({
-    start: firstDay,
-    end: lastDay,
+    start: firstDayUTC3,
+    end: lastDayUTC3,
   }).forEach((date) => {
     const weekDay = getDay(date)
 
