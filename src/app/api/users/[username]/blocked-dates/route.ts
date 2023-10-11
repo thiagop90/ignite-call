@@ -65,9 +65,9 @@ export async function GET(
     )
   })
 
-  const referenceDate = startOfWeek(
-    setYear(setMonth(new Date(), numericMonthParam), numericYearParam),
-    { weekStartsOn: 0 },
+  const referenceDate = setYear(
+    setMonth(new Date(), numericMonthParam),
+    numericYearParam,
   )
   const firstDay = startOfMonth(referenceDate)
   const lastDay = endOfMonth(referenceDate)
@@ -86,8 +86,8 @@ export async function GET(
   const blockedDates: Date[] = []
 
   eachDayOfInterval({
-    start: startOfMonth(referenceDate),
-    end: endOfMonth(referenceDate),
+    start: firstDay,
+    end: lastDay,
   }).forEach((date) => {
     const weekDay = getDay(date)
 

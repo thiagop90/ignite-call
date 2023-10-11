@@ -43,7 +43,7 @@ export function TimePicker(props: TimePickerProps) {
   const dayFormatted = format(date, "dd 'de' MMMM", { locale: ptBR })
 
   return (
-    <div className="grid w-full overflow-y-auto py-6 scrollbar-thin scrollbar-track-accent scrollbar-thumb-primary scrollbar-thumb-rounded-full sm:px-6 md:absolute md:inset-y-0 md:right-0 md:w-80 md:border-l md:pb-0">
+    <div className="overflow-y-auto py-6 scrollbar-thin scrollbar-track-accent scrollbar-thumb-primary scrollbar-thumb-rounded-full sm:px-6 md:absolute md:inset-y-0 md:right-0 md:w-80 md:border-l md:pb-0">
       <div className="font-medium text-muted-foreground ">
         <span className="text-white">{weekDayFormatted},</span> {dayFormatted}
       </div>
