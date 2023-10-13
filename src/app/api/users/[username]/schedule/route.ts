@@ -1,6 +1,7 @@
 import { getGoogleOAuthToken } from '@/lib/google'
 import { prisma } from '@/lib/prisma'
 import { addHours, endOfDay, isPast, startOfHour } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 import { google } from 'googleapis'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -33,6 +34,17 @@ export async function POST(
     createScheduleBodySchema.parse(requestBody)
 
   const schedulingDate = startOfHour(date)
+  const brazilianTimeZone = 'America/Sao_Paulo'
+
+  const startDateTime = utcToZonedTime(
+    schedulingDate,
+    brazilianTimeZone,
+  ).toISOString()
+
+  const endDateTime = utcToZonedTime(
+    addHours(schedulingDate, 1),
+    brazilianTimeZone,
+  ).toISOString()
 
   if (isPast(endOfDay(schedulingDate))) {
     throw new Error('Date is in the past')
@@ -68,10 +80,10 @@ export async function POST(
       summary: `Ignite Call: ${name}`,
       description: observations,
       start: {
-        dateTime: schedulingDate.toISOString(),
+        dateTime: startDateTime,
       },
       end: {
-        dateTime: addHours(schedulingDate, 1).toISOString(),
+        dateTime: endDateTime,
       },
       attendees: [{ email, displayName: name }],
       conferenceData: {
