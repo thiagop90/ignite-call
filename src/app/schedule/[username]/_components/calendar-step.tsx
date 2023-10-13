@@ -15,6 +15,7 @@ import {
 } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
+import { utcToZonedTime } from 'date-fns-tz'
 
 type UserBlockedDatesResponse = {
   blockedDates: string[]
@@ -40,7 +41,7 @@ export function CalendarStep(props: CalendarStepProps) {
   }
 
   const currentMonth = getMonth(month)
-  const currentYear = getYear(month)
+  const currentYear = month.getFullYear()
 
   const { data: blockedDates } = useQuery<Date[]>(
     ['blocked-dates', { username, month: currentMonth, year: currentYear }],

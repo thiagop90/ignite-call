@@ -59,21 +59,19 @@ export async function GET(
     where: { user },
   })
 
-  const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekDay) => {
-    return !userTimeIntervals.some(
-      (userTimeInterval) => userTimeInterval.week_day === weekDay,
-    )
-  })
+  // const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekDay) => {
+  //   return !userTimeIntervals.some(
+  //     (userTimeInterval) => userTimeInterval.week_day === weekDay,
+  //   )
+  // })
 
-  const referenceDate = setYear(
-    setMonth(new Date(), numericMonthParam),
-    numericYearParam,
+  const referenceDate = utcToZonedTime(
+    setYear(setMonth(new Date(), numericMonthParam), numericYearParam),
+    'America/Sao_Paulo',
   )
   const firstDay = startOfMonth(referenceDate)
   const lastDay = endOfMonth(referenceDate)
-
-  const firstDayUTC3 = utcToZonedTime(firstDay, 'America/Sao_Paulo')
-  const lastDayUTC3 = utcToZonedTime(lastDay, 'America/Sao_Paulo')
+  console.log(referenceDate)
 
   const userSchedulings = await prisma.scheduling.findMany({
     select: { date: true },
@@ -89,8 +87,8 @@ export async function GET(
   const blockedDates: Date[] = []
 
   eachDayOfInterval({
-    start: firstDayUTC3,
-    end: lastDayUTC3,
+    start: firstDay,
+    end: lastDay,
   }).forEach((date) => {
     const weekDay = getDay(date)
 
@@ -119,6 +117,5 @@ export async function GET(
 
   return NextResponse.json({
     blockedDates,
-    blockedWeekDays,
   })
 }
