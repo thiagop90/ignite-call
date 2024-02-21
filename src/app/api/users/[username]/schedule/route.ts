@@ -1,7 +1,6 @@
 import { getGoogleOAuthToken } from '@/lib/google'
 import { prisma } from '@/lib/prisma'
-import { addHours, endOfDay, isPast, startOfHour } from 'date-fns'
-import { utcToZonedTime } from 'date-fns-tz'
+import dayjs from 'dayjs'
 import { google } from 'googleapis'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -27,44 +26,44 @@ export async function POST(
   const username = params.username
 
   const user = await prisma.user.findUniqueOrThrow({
-    where: { username },
+    where: {
+      username,
+    },
   })
 
   const { email, name, observations, date } =
     createScheduleBodySchema.parse(requestBody)
 
-  const schedulingDate = startOfHour(date)
-  const brazilianTimeZone = 'America/Sao_Paulo'
+  const schedulingDate = dayjs(date).startOf('hour')
 
-  const startDateTime = utcToZonedTime(
-    schedulingDate,
-    brazilianTimeZone,
-  ).toISOString()
-
-  const endDateTime = utcToZonedTime(
-    addHours(schedulingDate, 1),
-    brazilianTimeZone,
-  ).toISOString()
-
-  if (isPast(endOfDay(schedulingDate))) {
-    throw new Error('Date is in the past')
+  if (schedulingDate.isBefore(new Date())) {
+    return NextResponse.json(
+      { message: 'Date is in the past' },
+      { status: 400 },
+    )
   }
 
   const conflictingScheduling = await prisma.scheduling.findFirst({
-    where: { user, date: schedulingDate },
+    where: {
+      user_id: user.id,
+      date: schedulingDate.toDate(),
+    },
   })
 
   if (conflictingScheduling) {
-    throw new Error('There is already an scheduling on this date and time.')
+    return NextResponse.json(
+      { message: 'There is another scheduling at the same time' },
+      { status: 400 },
+    )
   }
 
   const scheduling = await prisma.scheduling.create({
     data: {
-      user_id: user.id,
-      email,
       name,
+      email,
       observations,
-      date: schedulingDate,
+      date: schedulingDate.toDate(),
+      user_id: user.id,
     },
   })
 
@@ -77,13 +76,13 @@ export async function POST(
     calendarId: 'primary',
     conferenceDataVersion: 1,
     requestBody: {
-      summary: `Ignite Call: ${name}`,
+      summary: `Call Scheduler ${name}`,
       description: observations,
       start: {
-        dateTime: startDateTime,
+        dateTime: schedulingDate.format(),
       },
       end: {
-        dateTime: endDateTime,
+        dateTime: schedulingDate.add(1, 'hour').format(),
       },
       attendees: [{ email, displayName: name }],
       conferenceData: {

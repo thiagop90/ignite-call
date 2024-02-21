@@ -39,7 +39,5 @@ export async function POST(req: NextRequest) {
     }),
   )
 
-  // await prisma.userTimeInterval.createMany
-
   return new NextResponse(undefined, { status: 201 })
 }
