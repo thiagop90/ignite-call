@@ -4,11 +4,8 @@ import {
   endOfMonth,
   getDay,
   isSameDay,
-  setMonth,
-  setYear,
   startOfMonth,
 } from 'date-fns'
-import { utcToZonedTime } from 'date-fns-tz'
 import { NextRequest, NextResponse } from 'next/server'
 
 interface UserBlockedDatesProps {
@@ -59,19 +56,16 @@ export async function GET(
     where: { user },
   })
 
-  // const blockedWeekDays = [0, 1, 2, 3, 4, 5, 6].filter((weekDay) => {
-  //   return !userTimeIntervals.some(
-  //     (userTimeInterval) => userTimeInterval.week_day === weekDay,
-  //   )
-  // })
-
-  const referenceDate = utcToZonedTime(
-    setYear(setMonth(new Date(), numericMonthParam), numericYearParam),
-    'America/Sao_Paulo',
+  const blockedWeekDays = Array.from(Array(7).keys()).filter(
+    (weekDay) =>
+      !userTimeIntervals.some(
+        (availableWeekDay) => availableWeekDay.week_day === weekDay,
+      ),
   )
+
+  const referenceDate = new Date(numericYearParam, numericMonthParam)
   const firstDay = startOfMonth(referenceDate)
   const lastDay = endOfMonth(referenceDate)
-  console.log(referenceDate)
 
   const userSchedulings = await prisma.scheduling.findMany({
     select: { date: true },
@@ -115,7 +109,10 @@ export async function GET(
     }
   })
 
+  // console.log(blockedDates)
+
   return NextResponse.json({
+    blockedWeekDays,
     blockedDates,
   })
 }

@@ -6,7 +6,6 @@ import { Calendar } from '@/components/ui/calendar'
 import {
   endOfDay,
   getMonth,
-  getYear,
   isPast,
   isSameDay,
   parseISO,
@@ -15,7 +14,6 @@ import {
 } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
-import { utcToZonedTime } from 'date-fns-tz'
 
 type UserBlockedDatesResponse = {
   blockedDates: string[]
